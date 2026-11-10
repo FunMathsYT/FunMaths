@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>FunMaths</title>
+<meta name="description" content="Quick maths tricks, curious puzzles and the maths hiding in everyday things.">
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: white header, lavender hero card (text left, channel banner right), two carousels, then a searchable library grouped by topic. Videos open in an in-page dialog. */
+:root{
+  --bg:#faf8f6;
+  --card:#ffffff;
+  --ink:#1f1637;
+  --muted:#6a6280;
+  --line:#e9e3f1;
+  --brand:#5a36b3;
+  --brand-dark:#43268f;
+  --lav:#f1ebfb;
+  --lav-deep:#e2d6fa;
+  --gold:#ffe9b8;
+  --font-display:'Fraunces',Georgia,'Times New Roman',serif;
+  --font-body:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --radius:18px;
+  --shadow:0 1px 2px rgba(31,22,55,.05),0 8px 24px rgba(31,22,55,.06);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+h1,h2,h3{margin:0;font-family:var(--font-display);line-height:1.1;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1140px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:3px solid var(--brand);outline-offset:3px;border-radius:8px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font:700 .98rem var(--font-body);text-decoration:none;cursor:pointer;border:0;border-radius:14px;padding:.8rem 1.3rem;background:var(--brand);color:#fff;transition:background .15s,transform .15s}
+.btn:hover{background:var(--brand-dark)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--brand);box-shadow:inset 0 0 0 2px var(--lav-deep)}
+.btn.ghost:hover{background:var(--lav)}
+.btn.small{padding:.55rem 1rem;border-radius:12px;font-size:.92rem}
+
+/* header */
+header.top{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
+.logo{width:42px;height:42px;border-radius:12px;background:var(--brand);color:#fff;display:grid;place-items:center;font:800 1.4rem var(--font-display);overflow:hidden;flex:0 0 auto}
+.logo img{width:100%;height:100%;object-fit:cover}
+.brand-name{font:800 1.5rem var(--font-display);letter-spacing:-.02em;white-space:nowrap}
+.brand-name b{color:var(--brand);font-weight:800}
+.top-actions{display:flex;align-items:center;gap:8px}
+.top-link{display:none;text-decoration:none;font-weight:700;color:var(--brand);padding:.5rem .8rem;border-radius:10px}
+.top-link:hover{background:var(--lav)}
+@media(min-width:640px){.top-link{display:inline-block}}
+
+/* hero */
+.hero{margin-top:22px;background:var(--lav);border-radius:28px;padding:clamp(22px,5vw,56px);display:grid;gap:28px;align-items:center;position:relative;overflow:hidden;
+  background-image:radial-gradient(rgba(90,54,179,.14) 1px,transparent 1.2px);background-size:22px 22px}
+@media(min-width:900px){.hero{grid-template-columns:1.05fr 1fr}}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font:700 .78rem var(--font-body);letter-spacing:.14em;text-transform:uppercase;color:var(--brand);margin-bottom:14px}
+.hero h1{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:800;letter-spacing:-.025em}
+.hero h1 em{display:block;color:var(--brand);font-style:italic}
+.hero .lead{max-width:44ch;margin:18px 0 26px;color:var(--muted);font-size:1.08rem}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.stats{display:flex;flex-wrap:wrap;gap:10px 28px;list-style:none;margin:28px 0 0;padding:0}
+.stats b{display:block;font:800 1.5rem var(--font-display);line-height:1.1}
+.stats span{font-size:.85rem;color:var(--muted)}
+.hero-art{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:22px;overflow:hidden;background:var(--lav-deep);box-shadow:var(--shadow)}
+.hero-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.hero-art .art{position:absolute;inset:0;display:grid;place-items:center}
+.art .disc{position:absolute;width:62%;aspect-ratio:1;border-radius:50%;background:#d6c5f7;max-width:340px}
+.art .q{position:relative;background:#fff;border-radius:16px;padding:14px 26px;box-shadow:0 10px 24px rgba(67,38,143,.18);transform:rotate(-6deg);text-align:center}
+.art .q small{display:block;font:700 .62rem var(--font-body);letter-spacing:.16em;color:var(--brand)}
+.art .q b{font:800 clamp(1.6rem,5vw,2.6rem) var(--font-display);color:var(--ink)}
+.art .ans{position:absolute;right:12%;bottom:16%;background:var(--brand);color:#fff;border-radius:12px;padding:8px 18px;transform:rotate(4deg);font:800 clamp(1.1rem,3.4vw,1.7rem) var(--font-display);box-shadow:0 10px 24px rgba(67,38,143,.3)}
+
+/* sections */
+section.block{padding-top:56px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(1.9rem,5vw,2.8rem);font-weight:800;letter-spacing:-.02em}
+.sec-head p{color:var(--muted);margin-top:6px}
+.arrows{display:none;gap:8px}
+@media(min-width:700px){.arrows{display:flex}}
+.arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font:700 1.3rem var(--font-body);cursor:pointer;box-shadow:var(--shadow)}
+.arrow:hover{background:var(--lav)}
+
+/* video cards */
+.card{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:0;cursor:pointer;overflow:hidden;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
+.card:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(31,22,55,.06),0 16px 32px rgba(31,22,55,.1)}
+.thumb{position:relative;aspect-ratio:16/9;max-width:100%;overflow:hidden;background:var(--tint,var(--lav))}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.thumb .fallback{position:absolute;inset:0;display:grid;place-items:center;font:800 clamp(3rem,8vw,4.4rem) var(--font-display);color:var(--tone,var(--brand));opacity:.9}
+.go{position:absolute;right:14px;bottom:14px;z-index:3;width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 4px 12px rgba(31,22,55,.15);color:var(--ink)}
+.go svg{width:20px;height:20px}
+.badge{position:absolute;left:12px;top:12px;z-index:3;background:#fff;color:var(--brand);font:700 .75rem var(--font-body);padding:.25rem .7rem;border-radius:999px;box-shadow:0 2px 8px rgba(31,22,55,.12)}
+.meta{padding:16px 18px 20px}
+.pill{display:inline-flex;align-items:center;gap:.4rem;font:700 .78rem var(--font-body);color:var(--tone,var(--brand));background:var(--tint,var(--lav));padding:.28rem .7rem;border-radius:10px}
+.meta h3{font:700 1.2rem var(--font-body);margin:12px 0 4px;line-height:1.3;letter-spacing:-.01em}
+.meta p{color:var(--muted);font-size:.95rem;line-height:1.5}
+.meta small{display:block;margin-top:8px;color:var(--muted);font-size:.8rem}
+
+/* carousels */
+.rail{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 4px 22px;margin:0 -4px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail > *{flex:0 0 min(80vw,320px);scroll-snap-align:start;min-width:0}
+
+/* library controls */
+.search{position:relative;flex:1 1 260px;max-width:340px}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted)}
+.search input{width:100%;font:500 .98rem var(--font-body);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:.8rem 1rem .8rem 2.7rem}
+.search input::placeholder{color:#9a93ad}
+.controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.chips{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:none;min-width:0}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:.5rem;font:700 .95rem var(--font-body);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:.6rem 1.1rem;cursor:pointer}
+.chip i{font:800 1.05rem var(--font-display);font-style:normal;color:var(--brand)}
+.chip:hover{background:var(--lav)}
+.chip[aria-pressed="true"]{background:var(--lav-deep);color:var(--brand-dark);border-color:var(--lav-deep)}
+.count{flex:0 0 auto;color:var(--muted);font-size:.9rem;display:none}
+@media(min-width:700px){.count{display:block}}
+
+/* topic blocks */
+.topic{padding-block:30px;border-top:1px solid var(--line)}
+.topic:first-child{border-top:0;padding-top:6px}
+.topic-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.glyph{flex:0 0 auto;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font:800 1.9rem var(--font-display);background:var(--tint);color:var(--tone)}
+.topic-top h3{font:800 1.7rem var(--font-display);letter-spacing:-.015em}
+.topic-top p{color:var(--muted);font-size:.95rem}
+.topic-body{display:grid;gap:20px;align-items:start}
+@media(min-width:860px){.topic-body{grid-template-columns:1.15fr 1fr}}
+.feat-tag{font:700 .75rem var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--tone);margin-bottom:10px}
+.more{display:flex;flex-direction:column;gap:14px;min-width:0}
+.more .btn{align-self:flex-start}
+.more .hint{color:var(--muted);font-size:.95rem}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.list[hidden]{display:none}
+.row{display:grid;grid-template-columns:128px 1fr;gap:14px;align-items:center;width:100%;text-align:left;font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px;cursor:pointer;transition:background .15s}
+.row:hover{background:var(--lav)}
+.row .thumb{border-radius:10px}
+.row .thumb .fallback{font-size:2rem}
+.row .t{min-width:0;font-weight:700;line-height:1.35;font-size:.98rem}
+.row small{display:block;color:var(--muted);font-weight:500;font-size:.82rem;margin-top:2px}
+@media(max-width:420px){.row{grid-template-columns:104px 1fr}}
+
+/* search results */
+.results{display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.empty{padding:40px 16px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--lav-deep);border-radius:var(--radius)}
+[hidden]{display:none!important}
+
+/* footer */
+footer{margin-top:72px;background:var(--card);border-top:1px solid var(--line)}
+footer .wrap{padding-block:36px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+footer h2{font-size:1.7rem;font-weight:800}
+footer p{color:var(--muted);margin-top:4px}
+
+/* video dialog */
+dialog{width:min(960px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:0;border-radius:22px;background:var(--card);color:var(--ink);box-shadow:0 30px 80px rgba(20,10,40,.45);overflow:auto}
+dialog::backdrop{background:rgba(24,14,48,.66);backdrop-filter:blur(3px)}
+.dlg-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 12px 20px}
+.x{width:40px;height:40px;border-radius:50%;border:0;background:var(--lav);color:var(--brand-dark);font:700 1.3rem var(--font-body);cursor:pointer}
+.x:hover{background:var(--lav-deep)}
+.frame{position:relative;aspect-ratio:16/9;max-width:100%;background:#0d0820}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.nofile{position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:12px;padding:clamp(16px,5vw,48px);color:#fff;background:linear-gradient(135deg,#1b1038,#2b1a5c)}
+.nofile b{font:800 clamp(1.2rem,4vw,1.8rem) var(--font-display)}
+.nofile span{max-width:52ch;opacity:.85;font-size:.95rem}
+.nofile .btn{background:#fff;color:var(--brand-dark)}
+.dlg-info{padding:18px 20px 22px;display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;justify-content:space-between}
+.dlg-info h3{font:800 1.5rem var(--font-display);letter-spacing:-.01em}
+.dlg-info p{color:var(--muted);margin-top:4px;max-width:60ch}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.btn{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Back to top">
+      <span class="logo" id="logo"><span id="logoFallback">∑</span><img id="logoImg" alt="" hidden></span>
+      <span class="brand-name" id="brandName">Fun<b>Maths</b></span>
+    </a>
+    <div class="top-actions">
+      <a class="top-link" href="#library">Video library</a>
+      <a class="btn small" data-sub href="#" target="_blank" rel="noopener">Subscribe</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+
+    <section class="hero" aria-labelledby="heroTitle">
+      <div>
+        <span class="eyebrow"><span aria-hidden="true">✳</span><span id="eyebrow">The FunMaths video hub</span></span>
+        <h1 id="heroTitle">Where Numbers <em>Tell Stories!</em></h1>
+        <p class="lead" id="lead"></p>
+        <div class="hero-actions">
+          <a class="btn" href="#library">Explore videos <span aria-hidden="true">↓</span></a>
+          <a class="btn ghost" data-sub href="#" target="_blank" rel="noopener">Subscribe on YouTube</a>
+        </div>
+        <ul class="stats" id="stats"></ul>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art">
+          <div class="disc"></div>
+          <div class="q"><small>MENTAL MATHS</small><b>97 × 94</b></div>
+          <div class="ans">= 9,118</div>
+        </div>
+        <img id="bannerImg" alt="" hidden>
+      </div>
+    </section>
+
+    <section class="block" id="trending" aria-labelledby="trendingH">
+      <div class="sec-head">
+        <div><h2 id="trendingH">Trending now</h2><p>The videos everyone is watching.</p></div>
+        <div class="arrows"><button class="arrow" data-rail="trendRail" data-dir="-1" aria-label="Scroll left">‹</button><button class="arrow" data-rail="trendRail" data-dir="1" aria-label="Scroll right">›</button></div>
+      </div>
+      <div class="rail" id="trendRail"></div>
+    </section>
+
+    <section class="block" id="recent" aria-labelledby="recentH" style="padding-top:20px">
+      <div class="sec-head">
+        <div><h2 id="recentH">Recent uploads</h2><p>Fresh from the channel.</p></div>
+        <div class="arrows"><button class="arrow" data-rail="recentRail" data-dir="-1" aria-label="Scroll left">‹</button><button class="arrow" data-rail="recentRail" data-dir="1" aria-label="Scroll right">›</button></div>
+      </div>
+      <div class="rail" id="recentRail"></div>
+    </section>
+
+    <section class="block" id="library" aria-labelledby="libH">
+      <div class="sec-head">
+        <div><h2 id="libH">Explore the library</h2><p>Find a favourite or try a new topic.</p></div>
+        <label class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q" type="search" placeholder="Search video titles…" autocomplete="off" aria-label="Search video titles">
+        </label>
+      </div>
+      <div class="controls">
+        <nav class="chips" id="chips" aria-label="Topics"></nav>
+        <span class="count" id="count"></span>
+      </div>
+      <div id="topics"></div>
+      <div class="results" id="results" hidden></div>
+      <div class="empty" id="noMatch" hidden></div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><h2>Never miss a trick.</h2><p>New maths videos every week.</p></div>
+    <a class="btn" data-sub href="#" target="_blank" rel="noopener">Subscribe on YouTube</a>
+  </div>
+</footer>
+
+<dialog id="dlg" aria-label="Video player">
+  <div class="dlg-bar"><span class="pill" id="dlgCat"></span><button class="x" id="dlgClose" aria-label="Close video">×</button></div>
+  <div class="frame" id="frame"></div>
+  <div class="dlg-info">
+    <div><h3 id="dlgTitle"></h3><p id="dlgDesc"></p></div>
+    <a class="btn small" data-sub href="#" target="_blank" rel="noopener">Subscribe</a>
+  </div>
+</dialog>
+
+<script>
+/* ============================================================
+   EDIT THIS BLOCK. Everything else builds from it.
+   ============================================================ */
+const CONFIG = {
+  nameLight: "Fun",          // shown in dark text
+  nameBold: "Maths",         // shown in purple
+  handle: "FunMaths-sm",   // channel handle without @
+  channelId: "",             // optional, starts with UC. Used instead of the handle if set.
+  banner: "banner.jpg",      // your channel banner, saved next to this file
+  icon: "icon.png",          // your channel icon, saved next to this file
+  eyebrow: "The FunMaths video hub",
+  lead: "Quick tricks, curious puzzles, and the maths hiding in everyday things.",
+  stats: [
+    { value: "120+", label: "videos" },
+    { value: "25K", label: "subscribers" },
+    { value: "Weekly", label: "new uploads" }
+  ]
+};
+
+/* tint = card background colour, tone = text/icon colour for that topic */
+const CATEGORIES = [
+  { key: "speed",    name: "Speed Maths Tricks", glyph: "×", blurb: "Calculate faster than a calculator.", tint: "#ece3ff", tone: "#5a36b3" },
+  { key: "puzzles",  name: "Maths Puzzles",      glyph: "?", blurb: "Brain teasers to test your logic.",   tint: "#dff1ea", tone: "#2b735e" },
+  { key: "shopping", name: "Shopping Problems",  glyph: "₹", blurb: "Discounts, bills and best-buy maths.", tint: "#fbe6ee", tone: "#9a3d68" },
+  { key: "real",     name: "Real Life Maths",    glyph: "%", blurb: "Where maths shows up every day.",      tint: "#e0ecfb", tone: "#2b5fa3" },
+  { key: "area",     name: "Area & Volume",      glyph: "△", blurb: "Rooms, tanks, glasses and pizzas.",    tint: "#ffefd6", tone: "#a4631a" }
+];
+
+/* id   = the part after v= in a YouTube link (youtube.com/watch?v=ID)
+   date = upload date, YYYY-MM-DD
+   desc = one line shown under the title
+   trending: true  -> appears in "Trending now"
+   featured: true  -> the highlighted video in its topic (default: the newest one)
+   The IDs below are placeholders. Replace each with a real ID from your channel. */
+const VIDEOS = [
+  { id: "jywAzRP-lZI", cat: "speed",    title: "Multiply Near 100",                 desc: "Can you work out 97 × 94 in your head?",                       date: "2026-11-05", trending: true },
+  { id: "REPLACE_02", cat: "speed",    title: "Square Numbers Ending in 5",        desc: "A two-second trick for 35², 65² and 85².",                     date: "2026-10-12" },
+  { id: "kpi5Cr8LRaQ", cat: "speed",    title: "Multiply by 11 in Three Seconds",   desc: "Add the neighbours and you are done.",                         date: "2026-09-20" },
+  { id: "6RTlHOl4SuM", cat: "puzzles",  title: "The Clock Strike Puzzle",           desc: "Seven strikes take seven seconds. How long do ten strikes take?", date: "2026-11-02", trending: true },
+  { id: "REPLACE_05", cat: "puzzles",  title: "Cut the Cake into 8 Equal Pieces",  desc: "Only three cuts allowed. How?",                                date: "2026-10-04" },
+  { id: "REPLACE_06", cat: "puzzles",  title: "Three Bulbs, Three Switches",       desc: "One visit to the room. Which switch is which?",                date: "2026-08-29" },
+  { id: "jBr4ZR6j6dk", cat: "shopping", title: "20% Up, Then 20% Down",             desc: "Does a price return to where it started?",                      date: "2026-10-28", trending: true },
+  { id: "LPhUq1ipGi0", cat: "shopping", title: "Which Pack Is Cheaper?",            desc: "Unit price made simple.",                                       date: "2026-09-30" },
+  { id: "REPLACE_09", cat: "shopping", title: "Split the Bill with GST",           desc: "Share a restaurant bill fairly.",                               date: "2026-08-15" },
+  { id: "REPLACE_10", cat: "real",     title: "How Much Petrol for the Trip?",     desc: "Mileage, distance and a quick estimate.",                       date: "2026-10-20" },
+  { id: "REPLACE_11", cat: "real",     title: "EMI Explained Simply",              desc: "What you really pay on a loan.",                                date: "2026-09-08" },
+  { id: "x0MRvu5DnGM", cat: "area",     title: "Taller vs Wider Juice Glass",       desc: "Which glass really holds more juice?",                          date: "2026-10-15", trending: true },
+  { id: "a9YniDO8kLk", cat: "area",     title: "Two Small Pizzas or One Medium?",   desc: "Compare two 8-inch pizzas with one 12-inch pizza.",             date: "2026-09-14" },
+  { id: "REPLACE_14", cat: "area",     title: "How Many Tiles for Your Room?",     desc: "Area made easy.",                                               date: "2026-08-10" }
+];
+/* ============================================================ */
+
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const catOf = key => CATEGORIES.find(c => c.key === key) || CATEGORIES[0];
+const fmtDate = d => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+const byNewest = (a, b) => b.date.localeCompare(a.date);
+const tintVars = c => `--tint:${c.tint};--tone:${c.tone}`;
+const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+/* ---------- Channel details, banner, icon, subscribe ---------- */
+document.title = CONFIG.nameLight + CONFIG.nameBold;
+$('#brandName').innerHTML = esc(CONFIG.nameLight) + '<b>' + esc(CONFIG.nameBold) + '</b>';
+$('#eyebrow').textContent = CONFIG.eyebrow;
+$('#lead').textContent = CONFIG.lead;
+$('#stats').innerHTML = CONFIG.stats.map(s => `<li><b>${esc(s.value)}</b><span>${esc(s.label)}</span></li>`).join('');
+
+function loadImage(img, src, onOk) {
+  img.onload = () => { img.hidden = false; if (onOk) onOk(); };
+  img.onerror = () => { img.remove(); };
+  img.src = src;
+}
+loadImage($('#bannerImg'), CONFIG.banner);
+loadImage($('#logoImg'), CONFIG.icon, () => { $('#logoFallback').hidden = true; $('#logo').style.background = 'transparent'; });
+
+const subUrl = (CONFIG.channelId
+  ? 'https://www.youtube.com/channel/' + encodeURIComponent(CONFIG.channelId)
+  : 'https://www.youtube.com/@' + encodeURIComponent(CONFIG.handle)) + '?sub_confirmation=1';
+document.querySelectorAll('[data-sub]').forEach(a => a.href = subUrl);
+
+/* ---------- Card builders ---------- */
+function thumb(v, badge, withGo) {
+  const c = catOf(v.cat);
+  return `<div class="thumb" style="${tintVars(c)}">
+    <div class="fallback" aria-hidden="true">${esc(c.glyph)}</div>
+    <img src="https://i.ytimg.com/vi/${encodeURIComponent(v.id)}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
+    ${badge ? `<span class="badge">${esc(badge)}</span>` : ''}
+    ${withGo ? `<span class="go">${ARROW}</span>` : ''}
+  </div>`;
+}
+function card(v, badge) {
+  const c = catOf(v.cat);
+  return `<button class="card" data-play="${esc(v.id)}" aria-label="Play: ${esc(v.title)}">
+    ${thumb(v, badge, true)}
+    <div class="meta" style="${tintVars(c)}">
+      <span class="pill">${esc(c.glyph)}&nbsp; ${esc(c.name)}</span>
+      <h3>${esc(v.title)}</h3>
+      <p>${esc(v.desc || '')}</p>
+    </div>
+  </button>`;
+}
+function row(v) {
+  return `<li><button class="row" data-play="${esc(v.id)}" aria-label="Play: ${esc(v.title)}">
+    ${thumb(v)}
+    <span class="t">${esc(v.title)}<small>${fmtDate(v.date)}</small></span>
+  </button></li>`;
+}
+
+/* ---------- Carousels ---------- */
+const sorted = [...VIDEOS].sort(byNewest);
+const trending = VIDEOS.filter(v => v.trending).sort(byNewest);
+$('#trendRail').innerHTML = (trending.length ? trending : sorted.slice(0, 6)).map(v => card(v, 'Trending')).join('');
+$('#recentRail').innerHTML = sorted.slice(0, 8).map((v, i) => card(v, i === 0 ? 'New' : '')).join('');
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('.arrow');
+  if (!a) return;
+  const rail = document.getElementById(a.dataset.rail);
+  rail.scrollBy({ left: Number(a.dataset.dir) * rail.clientWidth * 0.85, behavior: 'smooth' });
+});
+
+/* ---------- Library: topics, filter chips, search ---------- */
+const topicsEl = $('#topics');
+topicsEl.innerHTML = CATEGORIES.map(c => {
+  const vids = VIDEOS.filter(v => v.cat === c.key).sort(byNewest);
+  if (!vids.length) return '';
+  const feat = vids.find(v => v.featured) || vids[0];
+  const rest = vids.filter(v => v !== feat);
+  return `<article class="topic" data-cat="${c.key}" style="${tintVars(c)}">
+    <div class="topic-top"><div class="glyph" aria-hidden="true">${esc(c.glyph)}</div>
+      <div><h3>${esc(c.name)}</h3><p>${esc(c.blurb)}</p></div></div>
+    <div class="topic-body">
+      <div><div class="feat-tag">Featured video</div>${card(feat)}</div>
+      <div class="more">
+        ${rest.length
+          ? `<p class="hint">${rest.length} more in this topic.</p>
+             <button class="btn ghost" data-toggle="list-${c.key}" aria-expanded="false" aria-controls="list-${c.key}">Show more videos</button>
+             <ul class="list" id="list-${c.key}" hidden>${rest.map(row).join('')}</ul>`
+          : '<p class="hint">More videos coming soon.</p>'}
+      </div>
+    </div>
+  </article>`;
+}).join('');
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-toggle]');
+  if (!t) return;
+  const list = document.getElementById(t.dataset.toggle);
+  const open = list.hidden;
+  list.hidden = !open;
+  t.setAttribute('aria-expanded', String(open));
+  t.textContent = open ? 'Hide videos' : 'Show more videos';
+});
+
+let activeCat = 'all';
+const chipsEl = $('#chips');
+chipsEl.innerHTML = `<button class="chip" data-chip="all" aria-pressed="true"><i>∑</i>All videos</button>` +
+  CATEGORIES.map(c => `<button class="chip" data-chip="${c.key}" aria-pressed="false"><i>${esc(c.glyph)}</i>${esc(c.name)}</button>`).join('');
+
+function applyFilters() {
+  const q = $('#q').value.trim().toLowerCase();
+  const results = $('#results'), none = $('#noMatch');
+  chipsEl.querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.chip === activeCat)));
+
+  if (q) {
+    const hits = VIDEOS.filter(v =>
+      (activeCat === 'all' || v.cat === activeCat) &&
+      (v.title + ' ' + (v.desc || '') + ' ' + catOf(v.cat).name).toLowerCase().includes(q)
+    ).sort(byNewest);
+    topicsEl.hidden = true;
+    results.hidden = !hits.length;
+    results.innerHTML = hits.map(v => card(v)).join('');
+    none.hidden = hits.length > 0;
+    none.textContent = `No videos match “${$('#q').value.trim()}”. Try another word.`;
+    $('#count').textContent = hits.length + (hits.length === 1 ? ' video' : ' videos');
+  } else {
+    results.hidden = true; none.hidden = true; topicsEl.hidden = false;
+    let n = 0;
+    topicsEl.querySelectorAll('.topic').forEach(t => {
+      const show = activeCat === 'all' || t.dataset.cat === activeCat;
+      t.hidden = !show;
+      if (show) n += VIDEOS.filter(v => v.cat === t.dataset.cat).length;
+    });
+    $('#count').textContent = n + (n === 1 ? ' video' : ' videos');
+  }
+}
+chipsEl.addEventListener('click', e => {
+  const b = e.target.closest('[data-chip]');
+  if (!b) return;
+  activeCat = b.dataset.chip;
+  applyFilters();
+});
+$('#q').addEventListener('input', applyFilters);
+applyFilters();
+
+/* ---------- Player: opens in a dialog on this page ---------- */
+const dlg = $('#dlg'), frame = $('#frame');
+function play(id) {
+  const v = VIDEOS.find(x => x.id === id);
+  if (!v) return;
+  const c = catOf(v.cat);
+  $('#dlgCat').textContent = c.glyph + '  ' + c.name;
+  $('#dlgCat').style.cssText = tintVars(c);
+  $('#dlgTitle').textContent = v.title;
+  $('#dlgDesc').textContent = v.desc || '';
+  const watchUrl = 'https://www.youtube.com/watch?v=' + encodeURIComponent(id);
+  if (location.protocol === 'file:') {
+    /* YouTube blocks embeds on pages opened from a local file (Error 153). */
+    frame.innerHTML = `<div class="nofile"><b>Playback works once the site is online</b>
+      <span>You opened this page from your computer, and YouTube does not allow embedded videos there. Upload the site to your hosting (or run a local server) and this window will play the video.</span>
+      <a class="btn small" href="${watchUrl}" target="_blank" rel="noopener">Watch on YouTube</a></div>`;
+  } else {
+    frame.innerHTML = `<iframe src="https://www.youtube.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0&playsinline=1&origin=${encodeURIComponent(location.origin)}"
+      title="${esc(v.title)}" referrerpolicy="strict-origin-when-cross-origin"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  }
+  if (!dlg.open) dlg.showModal();
+}
+document.addEventListener('click', e => {
+  const p = e.target.closest('[data-play]');
+  if (p) play(p.dataset.play);
+});
+$('#dlgClose').addEventListener('click', () => dlg.close());
+dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+dlg.addEventListener('close', () => { frame.innerHTML = ''; });
+</script>
+</body>
+</html>
